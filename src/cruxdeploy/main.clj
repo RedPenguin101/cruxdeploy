@@ -11,7 +11,7 @@
 
 (defn start []
   (println "Starting Router on 3000")
-  (jetty/run-jetty (router {:env-name "Dev"}) {:port 3000 :join? false}))
+  (jetty/run-jetty (router {:env-name (env :env-name)}) {:port 3000 :join? false}))
 
 (defn -main []
   (start))

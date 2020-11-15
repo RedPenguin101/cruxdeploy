@@ -107,3 +107,20 @@ Add [environ](https://github.com/weavejester/environ) to deps
 
 Change `router` to a function that takes an env. In `start` just pass a dict for now.
 
+Next, set up a bash script to build and run the jar. Inbetween, set the ENV_NAME variable to Dev
+
+```bash
+#!/bin/bash
+clj -M:depstar
+export ENV_NAME=dev
+java -cp ./target/cruxdeploy.jar clojure.main -m cruxdeploy.main
+```
+
+In main, use environ to pull out the env-name as you call the router
+
+```clojure
+(jetty/run-jetty (router {:env-name (env :env-name)}) {:port 3000 :join? false})
+```
+
+Check that you get `Hello World, this is the dev environment` when you hit `http://localhost:3000/hello-world`
+

@@ -40,3 +40,26 @@ Run from console
 $ clj -X cruxdeploy.main/-main
 Hello World
 ```
+
+## Build to Uberjar
+
+With [depstar](https://github.com/seancorfield/depstar).
+
+```clojure
+{:paths ["src"]
+ :deps {org.clojure/clojure  {:mvn/version "1.10.1"}}
+ :aliases {:depstar
+           {:extra-deps {seancorfield/depstar {:mvn/version "1.1.133"}}
+            :main-opts ["-m" "hf.depstar.uberjar" "target/cruxdeploy.jar"]}}}
+```
+
+Build the jar with
+
+`clj -M:depstar`
+
+Run it with
+
+```
+▶ java -cp ./target/cruxdeploy.jar clojure.main -m cruxdeploy.main
+Hello World
+```

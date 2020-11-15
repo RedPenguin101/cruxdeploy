@@ -1,4 +1,4 @@
 (ns cruxdeploy.main)
 
-(defn -main [_]
+(defn -main []
   (println "Hello World"))

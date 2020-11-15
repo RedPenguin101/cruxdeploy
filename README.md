@@ -124,3 +124,25 @@ In main, use environ to pull out the env-name as you call the router
 
 Check that you get `Hello World, this is the dev environment` when you hit `http://localhost:3000/hello-world`
 
+## Add a test
+
+```clojure
+(ns cruxdeploy.main-test
+  (:require [clojure.test :refer [deftest is]]))
+
+(deftest test
+  (is (= 2 (+ 1 1))))
+```
+
+Add another alias in tests
+
+```clojure
+:run-tests {:extra-paths ["test"]
+                       :extra-deps  {com.cognitect/test-runner
+                                     {:git/url "https://github.com/cognitect-labs/test-runner.git"
+                                      :sha     "209b64504cb3bd3b99ecfec7937b358a879f55c1"}}
+                       :main-opts   ["-m" "cognitect.test-runner"
+                                     "-d" "test"]}
+```
+
+Check the tests are being picked up and pass with `clj -M:run-tests`

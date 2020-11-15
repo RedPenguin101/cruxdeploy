@@ -100,3 +100,10 @@ Expand main
 ```
 
 Build, run, check you can hit the endpoint `http://localhost:3000/hello-world`
+
+## Environmental variables
+
+Add [environ](https://github.com/weavejester/environ) to deps
+
+Change `router` to a function that takes an env. In `start` just pass a dict for now.
+

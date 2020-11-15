@@ -146,3 +146,30 @@ Add another alias in tests
 ```
 
 Check the tests are being picked up and pass with `clj -M:run-tests`
+
+## Add circle CI for continuous integration
+
+make a new file _.circleci/config.yml_
+
+```yaml
+version: 2
+jobs:
+  build:
+    working_directory: ~/cruxdeploy
+    docker:
+      - image: circleci/clojure:openjdk-11-tools-deps-1.10.1.536
+
+    environment:
+      JVM_OPTS: -Xmx3200m
+    steps:
+      - checkout
+      - restore_cache:
+          key: cruxdeploy-{{ checksum "deps.edn" }}
+      - run: clojure -R:test -Spath
+      - save_cache:
+          paths:
+            - ~/.m2
+            - ~/.gitlibs
+          key: cruxdeploy-{{ checksum "deps.edn" }}
+      - run: clojure -A:run-tests
+```

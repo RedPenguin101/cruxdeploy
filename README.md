@@ -63,3 +63,40 @@ Run it with
 ▶ java -cp ./target/cruxdeploy.jar clojure.main -m cruxdeploy.main
 Hello World
 ```
+
+### API with stateless app
+
+Add ring + reitit to deps
+
+```clojure
+{:paths ["src"]
+ :deps {org.clojure/clojure  {:mvn/version "1.10.1"}
+        ring/ring            {:mvn/version "1.8.1"}
+        metosin/reitit       {:mvn/version "0.5.5"}}
+ :aliases {:depstar
+           {:extra-deps {seancorfield/depstar {:mvn/version "1.1.133"}}
+            :main-opts ["-m" "hf.depstar.uberjar" "target/cruxdeploy.jar"]}}}
+```
+
+Expand main
+
+```clojure
+(ns cruxdeploy.main
+  (:require [ring.adapter.jetty :as jetty]
+            [reitit.ring :as ring]
+            [ring.util.response :as rr]))
+
+(def router
+  (ring/ring-handler
+   (ring/router
+    ["/hello-world" {:get (fn [_] (rr/response "Hello World"))}])))
+
+(defn start []
+  (println "Starting Router on 3000")
+  (jetty/run-jetty router {:port 3000 :join? false}))
+
+(defn -main []
+  (start))
+```
+
+Build, run, check you can hit the endpoint `http://localhost:3000/hello-world`
